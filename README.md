@@ -47,30 +47,54 @@ https://www.balena.io/etcher/
 12) Following (mostly) reference (2) above, I entered these shell commands:
 
 	$ sudo apt-get -y update
+
     $ mkdir git
+    
     $ cd git/
+    
     $ git clone --depth=1 https://github.com/raspberrypi/linux -b rpi-4.14.y-rt
+    
     $ cd linux/
+    
     $ KERNEL=kernel7
+    
     $ make bcm2709_defconfig
+    
     $ sudo apt-get install ncurses-base
+    
     $ sudo apt-get install libncurses5-dev libncursesw5-dev
+    
     $ make menuconfig
+    
     $ sudo apt-get install bc
+    
     $ make -j4 zImage modules dtbs
+    
     $ sudo make modules_install
+    
     $ sudo cp arch/arm/boot/dts/*.dtb /boot/
+    
     $ sudo cp arch/arm/boot/dts/overlays/*.dtb* /boot/overlays/
+    
     $ sudo cp arch/arm/boot/dts/overlays/README /boot/overlays/
+    
     $ sudo cp arch/arm/boot/zImage /boot/$KERNEL.img
+    
     $ sudo reboot -n
+    
     $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 43DDF224
+    
     $ sudo apt-get dirmngr
+    
     $ sudo apt-get install dirmngr
+    
     $ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 43DDF224
+    
     $ sudo sh -c   "echo 'deb http://deb.machinekit.io/debian stretch main' > \
        /etc/apt/sources.list.d/machinekit.list"
+    
     $ sudo apt-get update
+    
     $ sudo apt-get install machinekit-rt-preempt
 
 13) On my host, I opened a new terminal and enabled x server access
