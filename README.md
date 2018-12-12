@@ -45,6 +45,7 @@ https://www.balena.io/etcher/
 	$ ssh pi@192.168.0.200
 
 12) Following (mostly) reference (2) above, I entered these shell commands:
+
 	$ sudo apt-get -y update
     $ mkdir git
     $ cd git/
@@ -88,13 +89,14 @@ and the latency I am seeing seems to be VERY large:
 
 A) For the first test 
 
-   $ latency-test
+	$ latency-test
 
    the Max jitter while I am not loading the CPU is ~ 60 us (yes, micro-sec)
 
    and when I load the rpi with another application (glxgears) the latency balloons to about 310 us!!!
 
 B) For the second test as shown on the machinekit website
+	
 	$ latency-test 25us 1ms
 
     This test, under load has
