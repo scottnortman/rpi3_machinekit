@@ -12,6 +12,7 @@ REFERENCES (Thank you!)
 4) https://www.youtube.com/watch?v=H2XkYI79irQ&t=1s
 5) https://www.youtube.com/watch?v=uFbr7xBjItE
 6) https://www.youtube.com/watch?v=8lAKXLrmSZo
+7) https://lemariva.com/blog/2018/04/rapberry-pi-preempt-rt-kernel-performance-on-rasbperry-pi-3-model-b
 
 
 Here are the steps performed:
@@ -102,6 +103,7 @@ https://www.balena.io/etcher/
 
 14) Then I reconnected to the rpi with
 	$ ssh -X pi@192.168.0.200
+    $ export DISPLAY=192.168.0.113:0.0
 
 15) And at the prompt I was able to start machinekit with the graphic window shown on my host!
 	$ machinekit
@@ -130,6 +132,137 @@ B) For the second test as shown on the machinekit website
 
 
 I think these numbers are quite large, so I will investigate...
+
+
+12/12/2018
+
+From reference (7) I added the additional lines to the /boot/cmdline.txt, and again ran
+
+    $ latency-test 125us 2ms
+
+This time, the results were: 
+Unloaded
+Servo Thread (2ms): 101.5 us
+Base Thread (125us) 89 us
+
+Loaded
+Servo Thread (2ms): 3377472 ns
+Base Thread (125us) 214113 ns
+
+
+Next, I tried recompiling the 4.14.y-rt kernel w/ 1000Hz timer resolution:
+
+
+
+
+12/14
+
+when using the HAL shell + tutorial I ran into an issue w/ 
+
+halcmd: loadusr halmeter
+halcmd: Gtk-Message: Failed to load module "canberra-gtk-module"
+
+
+sudo apt install libcanberra-gtk-module libcanberra-gtk3-module
+
+
+12/22
+
+CHANGED TO BEAGLE BONE BLACK
+
+1) https://elinux.org/Beagleboard:BeagleBoneBlack_Debian#Flashing_eMMC
+2) https://machinekoder.com/machinekit-debian-stretch-beaglebone-black/
+
+
+Downladed image:
+wget https://rcn-ee.com/rootfs/bb.org/testing/2018-12-10/stretch-machinekit/bone-debian-9.6-machinekit-armhf-2018-12-10-4gb.img.xz
+
+Unzipped and wrote to micro SD using 
+https://www.balena.io/etcher/
+
+Logged in w/ usr:pass of machinekit:machinekit
+
+$ ssh -X machinekit@192.168.0.123
+
+Made a git folder:
+
+$ mkdir /home/machinekit/git
+
+Cloned
+
+https://github.com/machinekit/machinekit.git
+
+into git
+
+Also found this reference
+
+https://github.com/cdsteinkuehler/beaglebone-black-pinmux/blob/hal_pru_generic/pinmux.ods
+
+on BBB:
+
+$ sudo apt-get update
+
+$ sudo apt-get install xauth
+
+Now you can run ssh on client 
+
+$ ssh -v -X machinekit@192.168.0.210
+
+$ machinekit
+
+halscope
+
+$ sudo apt-get install libcanberra-gtk-module
+
+https://groups.google.com/forum/#!topic/machinekit/7ZC80xVkfXo
+
+Jun 19 post
+
+Solution to insmod error...
+https://jetforme.org/2018/04/machinekit-on-bbb/
+
+1) Install from elinux
+2) sudo apt-get update
+3) sudo apt-get upgrade
+4) machinekit 
+
+select pru-examples in GUI, (check YES to copy config file)
+it will fail w/ error
+
+
+5) Edit newly copied config file in /home/machinekit/configs/pru-examples
+
+$ vim pru-stepper.ini 
+
+For the CONFIG line, change to
+
+CONFIG=prucode=/usr/lib/linuxcnc/rt-preempt/pru_generic.bin pru=1 num_stepgens=3 num_pwmgens=1
+
+Save file
+
+6) Restart machinekit
+
+machinekit@beaglebone:~$ mkdir git
+machinekit@beaglebone:~$ cd git/
+machinekit@beaglebone:~/git$ git clone https://github.com/machinekit/machinekit.git --depth 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
