@@ -202,7 +202,11 @@ on BBB:
 
 $ sudo apt-get update
 
+$ sudo apt-get upgrade
+
 $ sudo apt-get install xauth
+
+$ touch ~/.Xauthority
 
 Now you can run ssh on client 
 
@@ -245,6 +249,133 @@ Save file
 machinekit@beaglebone:~$ mkdir git
 machinekit@beaglebone:~$ cd git/
 machinekit@beaglebone:~/git$ git clone https://github.com/machinekit/machinekit.git --depth 1
+
+Info re device tree overlays
+
+http://www.weigu.lu/sb-computer/bbb_device_tree/index.html
+http://derekmolloy.ie/gpios-on-the-beaglebone-black-using-device-tree-overlays/
+
+https://github.com/machinekoder/BBIOConfig
+
+issue w/ pin 9.28
+
+Waiting for /sys/class/uio/uio0 OK
+P9_28 pinmux file not found!
+WARNING: GPIO pin not exported, cannot set direction or value!
+bash: /sys/devices/platform/ocp/ocp*P9_28_pinmux/state: No such file or directory
+Cannot write pinmux file: /sys/devices/platform/ocp/ocp*P9_28_pinmux/state
+CRAMPS.hal:11: program './setup.sh' failed, returned 1
+Shutting down and cleaning up Machinekit...
+
+https://groups.google.com/forum/#!topic/beagleboard/EYSwmyxYjdM
+
+added this line to uEnv.txt
+
+cape_enable=bone_capemgr.enable_partno=/lib/firmware/BB-SPIDEV0-00A0.dtbo,/lib/firmware/BB-SPIDEV1-00A0.dtbo
+
+root@beaglebone:/sys/devices/platform/ocp# ls
+40300000.ocmcram  48046000.timer     48300000.epwmss    driver_override       ocp:P8_18_pinmux  ocp:P9_23_pinmux
+44e07000.gpio     48048000.timer     48302000.epwmss    modalias          ocp:P8_19_pinmux  ocp:P9_24_pinmux
+44e09000.serial   4804a000.timer     48304000.epwmss    ocp:cape-universal    ocp:P8_26_pinmux  ocp:P9_26_pinmux
+44e0b000.i2c      4804c000.gpio      4830e000.lcdc  ocp:l4_wkup@44c00000  ocp:P9_11_pinmux  ocp:P9_27_pinmux
+44e0d000.tscadc   48060000.mmc       48310000.rng   ocp:P8_07_pinmux      ocp:P9_12_pinmux  ocp:P9_30_pinmux
+44e35000.wdt      480c8000.mailbox   49000000.edma  ocp:P8_08_pinmux      ocp:P9_13_pinmux  ocp:P9_41_pinmux
+44e3e000.rtc      480ca000.spinlock  49800000.tptc  ocp:P8_09_pinmux      ocp:P9_14_pinmux  ocp:P9_42_pinmux
+47400000.usb      4819c000.i2c       49900000.tptc  ocp:P8_10_pinmux      ocp:P9_15_pinmux  ocp:P9_91_pinmux
+48022000.serial   481a0000.spi       49a00000.tptc  ocp:P8_11_pinmux      ocp:P9_16_pinmux  ocp:P9_92_pinmux
+48024000.serial   481a8000.serial    4a100000.ethernet  ocp:P8_12_pinmux      ocp:P9_17_pinmux  of_node
+4802a000.i2c      481ac000.gpio      4a300000.pruss ocp:P8_13_pinmux      ocp:P9_18_pinmux  power
+48030000.spi      481ae000.gpio      4c000000.emif  ocp:P8_14_pinmux      ocp:P9_19_pinmux  subsystem
+48038000.mcasp    481cc000.can       53100000.sham  ocp:P8_15_pinmux      ocp:P9_20_pinmux  uevent
+48042000.timer    481d0000.can       53500000.aes   ocp:P8_16_pinmux      ocp:P9_21_pinmux
+48044000.timer    481d8000.mmc       56000000.sgx   ocp:P8_17_pinmux      ocp:P9_22_pinmux
+
+###############################################################
+######  BBB + CRAMPS from scratch 20190101
+###############################################################
+
+Downladed image:
+wget https://rcn-ee.com/rootfs/bb.org/testing/2018-12-10/stretch-machinekit/bone-debian-9.6-machinekit-armhf-2018-12-10-4gb.img.xz
+
+Unzipped and wrote to micro SD using 
+https://www.balena.io/etcher/
+
+Logged in via ssh on host
+    $ ssh machinekit@192.168.0.210
+Logged in w/ 
+usr: machinekit
+passwd: machinekit
+
+Update / upgrade
+
+    $ sudo apt-get update
+
+    $ sudo apt-get upgrade
+
+    $ sudo apt-get install xauth
+
+    $ touch ~/.Xauthority
+
+
+Edit /boot/uEnv.txt
+
+Uncomment line 
+
+    disable_uboot_overlay_audio=1 
+
+to disable audio function from IO pins (allows for use as GPIO and SPI)
+
+Reboot
+
+    $sudo reboot -n
+
+And login per ssh w/ X windows support
+
+    $ ssh -X machinekit 192.168.200
+
+Make a folder
+
+    $ mkdir ~/git
+
+    $ cd ~/git
+
+Clone machinekit
+
+    $ git clone https://github.com/machinekit/machinekit.git --depth 1
+
+Goto CRAMPS directory
+
+    $ cd ~/git/machinekit/configs/ARM/BeagleBone/CRAMPS
+
+Start machinekit w/ CRAMPS.ini
+
+    $ machinekit CRAMPS.ini
+
+Machinekit should start...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
