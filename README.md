@@ -331,7 +331,7 @@ Reboot
 
 And login per ssh w/ X windows support
 
-    $ ssh -X machinekit 192.168.200
+    $ ssh -X machinekit@192.168.200
 
 Make a folder
 
