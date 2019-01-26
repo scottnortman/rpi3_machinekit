@@ -19,11 +19,10 @@ import Adafruit_BBIO.PWM as PWM
 
 class AdaHalPWM( object ) :
 
-	def __init__( self, name='', channel='', duty=0.0, freq=0.0, polarity=0, updateHz=1.0 ) :
+	def __init__( self, name='', updateHz=1.0, channel='', freq=0.0, polarity=0 ) :
 
 		assert( name != ''), ('[%s] is not a valid component name'%(name) )
 		assert( channel != ''), ('[%s] is not a valid channel name'%(channel))
-		assert( 0.0 <= duty <= 1.0 ), ('[%f] out of range'% (duty))
 		assert( 0.0 <= freq ), ('[%f] out of range' % (freq) ) 
 		assert( polarity==0 or polarity==1), ('[%d] polarity out of range'%(polarity) )
 		assert( 0.1 <= updateHz <= 100.0 ), ('[%f] updateHz out of range' %(updateHz) )
@@ -62,9 +61,21 @@ class AdaHalPWM( object ) :
 
 # Main entry point
 if __name__ == "__main__" :
-	print('AdaHalPWM')
+
+	parser = argparse.ArgumentParser( description="HAL component wrapper around Adafuit_BBIO.PWM" )
+	parser.add_argument( '-n', '--name', help='HAL component name', required=True, type=str )
+	parser.add_argument( '-u', '--update', help='Update rate, Hz', default=1.0, type=float )
+	parser.add_argument( '-c', '--channel', help='PWM channel (pin)', required=True, type=str )
+	parser.add_argument( '-f', '--frequency', help='PWM frequency, Hz', required=True, type=float )
+	parser.add_argument( '-p', '--polarity', help='PWM polarity', default=0, type=int )
+
+	args = parser.parse_args()
+
+	pwm = AdaHalPWM( name=args.name, updateHz=args.update, channel=args.channel, freq=args.frequency, polarity=args.polarity )
+	pwm.start()
 
 
-#parser = argparse
+
+
 
 
