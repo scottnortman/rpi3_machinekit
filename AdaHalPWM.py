@@ -12,6 +12,7 @@
 
 import sys
 import argparse
+import time
 
 import hal
 import Adafruit_BBIO.PWM as PWM
