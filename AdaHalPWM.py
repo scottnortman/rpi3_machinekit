@@ -52,7 +52,7 @@ class AdaHalPWM( object ) :
 
 			while True :
 				if self._component['enable'] :
-					PWM.set_duty_cycle( self._channel, self._component['duty'] )
+					PWM.set_duty_cycle( self._channel, self._component['duty'] * 100.0 )
 				else :
 					PWM.set_duty_cycle( self._channel, self._polarity )
 				time.sleep( 1.0 / self._updateHz )
