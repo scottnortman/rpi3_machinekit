@@ -57,7 +57,7 @@ class AdaHalPWM( object ) :
 				time.sleep( 1.0 / self._updateHz )
 
 		except Exception, err :
-			print( 'Component:[%s]:Except:[%s], exiting... ')
+			print( 'Component:[%s]:Except:[%s], exiting... '%(self._name, err))
 			self._component.exit()
 
 # Main entry point
