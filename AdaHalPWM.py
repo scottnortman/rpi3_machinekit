@@ -45,7 +45,7 @@ class AdaHalPWM( object ) :
 		try :
 
 			if self._component['enable'] :
-				PWM.start( self._channel, self._component['duty'], self._freq, self._polarity )
+				PWM.start( self._channel, self._component['duty'] * 100.0 , self._freq, self._polarity )
 			else :
 				PWM.start( self._channel, self._polarity, self._freq, self._polarity )
 
@@ -59,7 +59,16 @@ class AdaHalPWM( object ) :
 
 		except Exception, err :
 			print( 'Component:[%s]:Except:[%s], exiting... '%(self._name, err))
+			PWM.stop( self._channel )
+			PWM.cleanup()
 			self._component.exit()
+
+		except KeyboardInterrupt, err :
+			print( 'Component:[%s]:KeyboardInterrupt:[%s], exiting... '%(self._name, err))
+			PWM.stop( self._channel )
+			PWM.cleanup()
+			self._component.exit()
+
 
 # Main entry point
 if __name__ == "__main__" :
