@@ -27,6 +27,7 @@ class AdaHalPWM( object ) :
 		assert( polarity==0 or polarity==1), ('[%d] polarity out of range'%(polarity) )
 		assert( 0.1 <= updateHz <= 100.0 ), ('[%f] updateHz out of range' %(updateHz) )
 
+		self._name = name
 		self._channel = channel
 		self._freq = freq
 		self._polarity = polarity
