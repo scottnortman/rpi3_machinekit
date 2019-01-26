@@ -11,6 +11,7 @@
 # License: GNU GPL Version 2.0 or (at your option) any later version.  #
 
 import sys
+import argparse
 
 import hal
 import Adafruit_BBIO.PWM as PWM
@@ -58,3 +59,12 @@ class AdaHalPWM( object ) :
 		except Exception, err :
 			print( 'Component:[%s]:Except:[%s], exiting... ')
 			self._component.exit()
+
+# Main entry point
+if __name__ == "__main__" :
+	print('AdaHalPWM')
+
+
+#parser = argparse
+
+
