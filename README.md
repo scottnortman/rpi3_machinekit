@@ -347,11 +347,59 @@ Goto CRAMPS directory
 
     $ cd ~/git/machinekit/configs/ARM/BeagleBone/CRAMPS
 
+Ensure setup.sh is executable with
+
+    $ chmod 777 setup.sh
+
 Start machinekit w/ CRAMPS.ini
 
     $ machinekit CRAMPS.ini
 
 Machinekit should start...
+
+FYI, info re. IO pins 
+
+https://github.com/beagleboard/bb.org-overlays/blob/master/src/arm/cape-universal-00A0.dts
+
+20190102
+
+After some more research, I commented out additional lines of /boot/uEnv.txt
+
+    disable_uboot_overlay_emmc=1
+    disable_uboot_overlay_video=1
+
+since I am using X windows and a microSD card
+
+
+remote UI
+https://github.com/scottnortman/machinekit.git
+
+
+
+20190125
+
+Due to issues w/ remote UI and high CPU usage, going back to tkemc for now...
+
+Also found a problem with PWM generation; both the PWM component and the PRU PWM (as provided in machinekit)
+do not work properly; both implements have been tested with the Nomad spindle motor driver controller with
+poor results...
+
+Therefore, since machinekit allows for calling of python code in their 'real time' implementation, a work around
+using Adafruit BBIO library is under development...
+
+https://github.com/adafruit/adafruit-beaglebone-io-python
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
