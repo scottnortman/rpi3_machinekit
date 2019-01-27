@@ -1,14 +1,38 @@
 #!/usr/bin/python2
 # encoding: utf-8
 
-#########################################################################
-# Description: AdaHalPWM.py                                       	
-
-#	https://github.com/adafruit/adafruit-beaglebone-io-python
-# 	                                                    
-#                                                                      #
-# Author(s): Scott Nortman, scott.nortman@gmail.com                    #
-# License: GNU GPL Version 2.0 or (at your option) any later version.  #
+###################################################################################################
+#	File:	AdaHalPWM.py
+#	Desc:	Lightweight machinekit HAL wrapper around the Adafruit BBIO PWM library
+#	Date:	Jan 26 2019
+#	Auth:	Scott Nortman, scott.nortman@gmail.com
+#	Note:	Released under MIT open source license: https://opensource.org/licenses/MIT
+#
+#	For use with machinekit : http://www.machinekit.io/
+#	
+#	This class uses the Adafruit BBIO PWM library:
+#		https://github.com/adafruit/adafruit-beaglebone-io-python
+#
+#	This implements a loadable machinekit HAL user module (non-realtime); example:
+#
+#	$ halrun
+#	msgd:0 stopped
+#	rtapi:0 stopped
+#	rtapi_msgd command:  /usr/libexec/linuxcnc/rtapi_msgd --instance=0 --rtmsglevel=1 --usrmsglevel=1 --halsize=524288
+#	rtapi_app command:  /usr/libexec/linuxcnc/rtapi_app_rt-preempt --instance=0
+#	
+#	halcmd: loadusr -Wn pwm ./AdaHalPWM.py -n pwm -u 10 -c P9_29 -f 1000 -p 0
+#	Waiting for component 'pwm' to become ready.
+#
+#	halcmd: show pin
+# 	Component Pins:
+#   	Comp   Inst Type  Dir         Value  Name                                            Epsilon Flags  linked to:
+#     		80        float IN              0  pwm.duty                                	0.000010	--l-
+#     		80        bit   IN          FALSE  pwm.enable                              		--l-
+#	
+#	halcmd: setp pwm.enable 1
+#	halcmd: setp pwm.duty 0.5 
+#	
 
 import sys
 import argparse
